@@ -1,0 +1,51 @@
+<template>
+  <div :class="{'dark': darkMode}">
+    
+
+    <LoadingPage v-if="isAuthLoading" />
+      
+
+    <!-- APP -->
+
+    <div  v-else-if="user" class="min-h-full">
+
+
+      <div class="grid grid-cols-12 mx-auto sm:px-6 lg:max-w-7xl lg:px-8 lg:gap-5">
+
+        <!-- LEFT SIDE BAR -->
+
+        <div class="border-2 border-red-500 md:block xs-col-span-1 xl:col-span-2">
+          <div class="sticky top-0">
+            <SidebarLeft/>
+          </div>
+        </div>
+
+
+
+        <!-- Main content -->
+        <main class="col-span-12 bg-red-500 md:col-span-8 xl:col-span-6">
+          <router-view/>
+          
+        </main>
+
+        <!-- RIGHT SideBar -->
+
+      </div>
+
+    </div>
+
+    <AuthPage v-else/>
+
+  </div>
+</template>
+<script setup>
+
+const darkMode = ref(false)
+const {useAuthUser, initAuth, useAuthLoading} = useAuth()
+const user = useAuthUser()
+const isAuthLoading = useAuthLoading()
+
+onBeforeMount(() => {
+  initAuth()
+})
+</script>
