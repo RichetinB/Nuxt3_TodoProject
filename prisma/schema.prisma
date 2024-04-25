@@ -26,6 +26,8 @@ model User {
   updatedAt DateTime @updatedAt
 
   refreshToken RefreshToken[]
+
+  rooms     Users_Rooms[]
 }
 
 model RefreshToken {
@@ -38,3 +40,63 @@ model RefreshToken {
   userId Int
   user User @relation(fields: [userId], references: [id]) 
 } 
+
+model Rooms {
+  id    Int           @id @default(autoincrement())
+  name  String
+  Users Users_Rooms[]
+  Cards Cards[]
+}
+
+model Users_Rooms {
+  id     Int   @id @default(autoincrement())
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+  room   Rooms @relation(fields: [roomId], references: [id])
+  roomId Int
+}
+
+model Cards {
+  id          Int         @id @default(autoincrement())
+  title       String
+  description String
+  posX        Int
+  posY        Int
+  room        Rooms?      @relation(fields: [roomId], references: [id])
+  roomId      Int?
+  color       Colors?     @relation(fields: [colorId], references: [id])
+  colorId     Int?
+  forme       Formes?     @relation(fields: [formeId], references: [id])
+  formeId     Int?
+  checklist   Checklist[]
+}
+
+model Colors {
+  id    Int     @id
+  color String  @unique
+  Cards Cards[]
+}
+
+model Formes {
+  id    Int     @id @default(autoincrement())
+  forme String
+  Cards Cards[]
+}
+
+model Checklist {
+  id         Int     @id @default(autoincrement())
+  title      String
+  task       String
+  isFinished Boolean @default(false)
+  Cards      Cards?  @relation(fields: [cardsId], references: [id])
+  cardsId    Int?
+  Task       Tasks[]
+}
+
+model Tasks {
+  id          Int        @id @default(autoincrement())
+  task        String
+  isFinished  Boolean    @default(false)
+  Checklist   Checklist? @relation(fields: [checklistId], references: [id])
+  checklistId Int?
+}

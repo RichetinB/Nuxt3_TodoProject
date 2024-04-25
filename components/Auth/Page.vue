@@ -10,6 +10,7 @@
         <div class="flex items-center w-full h-full max-w-sm mx-auto lg:w-96">
             <AuthForm />
         </div>
+
  
         </div>
         

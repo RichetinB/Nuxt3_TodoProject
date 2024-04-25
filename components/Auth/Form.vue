@@ -10,6 +10,12 @@
                 <button @click="handleLogin">Login</button>
             </div>
 
+            <div>
+                <NuxtLink to="/register">
+                    Register
+                </NuxtLink>
+            </div>
+
         </div>
     </div>
 </template>

@@ -1,5 +1,8 @@
 import { jwtDecode } from "jwt-decode";
 
+import Cookies from 'js-cookie';
+
+
 export default () => {
 
     const useAuthToken = () => useState('auth_token')
@@ -41,6 +44,7 @@ export default () => {
             }
         });
     }
+
 
     const refreshToken = () => {
         return new Promise(async (resolve, reject) => {
@@ -102,6 +106,11 @@ export default () => {
             }
         })
     }
+
+    
+    
+
+    
     
     return {
         login,
@@ -110,4 +119,6 @@ export default () => {
         initAuth,
         useAuthLoading
     }
+
+    
 }
