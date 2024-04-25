@@ -36,7 +36,7 @@
                     Créer une room
                 </NuxtLink>
 
-                {{ room.name }}
+                <!-- {{ user.room.name }} -->
 
               </div>
             </main>
@@ -68,22 +68,18 @@
       initAuth()
     })
 
+    // const room = ref(null);
 
+    // const { getRoom } = useRoom()
 
-    import { useRoom } from '~/composables';
-
-    const room = ref(null);
-
-    const { getRoom } = useRoom(); /
-
-    onMounted(async () => {
-      try {
+    // onMounted(async () => {
+    //   try {
       
-        room.value = await getRoom();
-      } catch (error) {
-        console.error(error.message);
-      }
-    });
+    //     room.value = await getRoom();
+    //   } catch (error) {
+    //     console.error(error.message);
+    //   }
+    // });
 
       </script>
 
