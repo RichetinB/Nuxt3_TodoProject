@@ -1,5 +1,3 @@
-
-
   <template>
       <div :class="{'dark': darkMode}">
         
@@ -70,6 +68,7 @@
 
     // const room = ref(null);
 
+    const { getRoom } = useRoom(); 
     // const { getRoom } = useRoom()
 
     // onMounted(async () => {
