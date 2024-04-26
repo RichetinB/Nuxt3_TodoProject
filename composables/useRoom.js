@@ -1,7 +1,5 @@
 export default () => {
 
-
-
     const getRoom = async () => {
         try {
           const data = await useFetchApi('/api/rooms/room');
@@ -10,6 +8,11 @@ export default () => {
           throw new Error('Failed to fetch room data');
         }
       };
+
+      const initRoom = () =>  {
+        return new Promise(async (resolve))
+      }
+
     return {
         getRoom
     }

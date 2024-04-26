@@ -34,7 +34,14 @@
                     Créer une room
                 </NuxtLink>
 
-                <!-- {{ user.room.name }} -->
+                <div>
+                  <h2>Mes Salles</h2>
+                  <ul>
+                    <li v-for="room in rooms" :key="room.id">
+                      {{ room.name }}
+                    </li>
+                  </ul>
+                </div>
 
               </div>
             </main>
@@ -66,19 +73,15 @@
       initAuth()
     })
 
-    // const room = ref(null);
 
-    const { getRoom } = useRoom(); 
-    // const { getRoom } = useRoom()
-
-    // onMounted(async () => {
-    //   try {
-      
-    //     room.value = await getRoom();
-    //   } catch (error) {
-    //     console.error(error.message);
-    //   }
-    // });
-
+    onMounted(async () => {
+  try {
+    const userId = user.value.id;
+    const userRooms = await getRoomsByUserId(userId);
+    rooms.value = userRooms.map(userRoom => userRoom.room);
+  } catch (error) {
+    console.error('Erreur lors de la récupération des salles de l\'utilisateur :', error);
+  }
+});
       </script>
 
