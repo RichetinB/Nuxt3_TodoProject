@@ -24,8 +24,7 @@
       };
     },
     methods: {
-      async createRoom
-      () {
+      async createRoom () {
         try {
           const response = await fetch('/api/rooms/create', {
             method: 'POST',

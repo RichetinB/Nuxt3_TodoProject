@@ -6,9 +6,9 @@ import { roomTransformer } from "~/server/transformers/rooms";
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
 
-  const { name} = body;
+  const { name, userId } = body;
 
-  if (!name) {
+  if (!name || !userId) {
     return sendError(event, createError({ statusCode: 400, statusMessage: 'Invalid params' }));
   }
 
@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
     const room = await createRoom(roomData);
 
     // Créer la relation utilisateur-salle
-    // await createUserRoom(userId, room.id); // Correction ici
+    await createUserRoom(userId, room.id); // Correction ici
 
     return {
       body: roomTransformer(room)
