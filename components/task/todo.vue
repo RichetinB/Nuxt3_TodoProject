@@ -5,7 +5,7 @@
     @mouseup="onMouseUp"
     @dblclick.native="EmitElement()">
       <label for="task-title">Titre :</label>
-      <input type="text" id="task-title" v-model="taskTitle" placeholder="Entrez le titre" @focus="FocusTitle()" @blur="BlurTitle()" :style="{ backgroundColor: textAreaColor }">
+      <input type="text" id="task-title" v-model="card_data.taskTitle" placeholder="Entrez le titre" @focus="FocusTitle()" @blur="BlurTitle()" :style="{ backgroundColor: textAreaColor }">
     </div>
   </template>
   
@@ -13,12 +13,14 @@
 export default {
     data() {
       return {
-        taskTitle: '',
         colorActive: false,
         x: 0,
         y: 0,
         dragging: false,
         textAreaColor: "F5F5F5",
+        card_data: {
+          taskTitle: ''
+        }
       };
     },
     methods: {
@@ -44,8 +46,9 @@ export default {
     },
     EmitElement(){
       console.log("You Double Click");
-      this.$emit('selected', {
-        title: this.taskTitle
+      console.log(this.card_data)
+      this.$emit('dblclick', {
+        card: this.card_data
       });
     }
   }
@@ -59,6 +62,7 @@ export default {
     border-radius: 5px;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
     width: 300px;
+    position: absolute;
   }
   
   label {

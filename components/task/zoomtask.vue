@@ -1,8 +1,8 @@
 <template>
-  <div v-if="isVisible" class="core">
+  <div v-if="isVisible" class="modal">
     <div class="core-content">
       <span @click="closePopup()">X</span>
-      <h3>{{ todo_info.title }}</h3>
+      <h3>{{ card.title }}</h3>
       <!-- Add info -->
     </div>
   </div>
@@ -12,7 +12,7 @@
 export default {
   props: {
     isVisible: Boolean,
-    todo_info: Object
+    card: Object
   },
   methods: {
     closePopup(){
@@ -23,7 +23,7 @@ export default {
 </script>
 
 <style scoped>
-  .core {
+  .modal {
     background-color: aqua;
     position: absolute, fixed;
     width: 50%;

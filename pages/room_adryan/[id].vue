@@ -1,42 +1,30 @@
 <template>
-    <h1> Je suis La page Room numero {{ $route.params.id }}<div></div></h1>
+    <h1> Je suis La page Room numero {{ $route.params.id }}</h1>
     <button @click="AddCard"> Add Card </button>
-    <div class="card" v-for="(card, index) in list_card" :key="index">
-      <TaskTodo :card="card" />
-      <div>
-    <todo
-      v-for="(item, index) in items"
-      :key="index"
-      :title="item.title"
-      @selected="handleSelected"
-    />
-    <zoomtask
-      :isVisible="isPopupVisible"
-      :info="selectedItemInfo"
-      @close="isPopupVisible = false"
-    />
-  </div>
-    </div>
+    <todo class="card" v-for="(i, index) in list_card" :key="index" :card="i"/>
 </template>
 
 <script>
 import todo from '~/components/task/todo.vue';
 import zoomtask from '~/components/task/zoomtask.vue';
     export default {
+        data(){
+            return {
+                count: 0,
+                isPopupVisible: false,
+                selectedItemInfo: {},
+                list_card: [],
+            }
+        },
         components: {
             todo,
             zoomtask
         },
-        data(){
-            return {
-                list_card: [],
-                isPopupVisible: false,
-                selectedItemInfo: {}
-            }
-        },
         methods: {
             AddCard() {
-                this.list_card.push("")
+                this.list_card.push({id: this.count, title:""})
+                this.count +=1
+                console.log(this.list_card)
             },
             handleSelected(itemInfo) {
                 this.selectedItemInfo = itemInfo;
@@ -46,12 +34,6 @@ import zoomtask from '~/components/task/zoomtask.vue';
     }
 </script>
 
-<style scoped>
-
-.card {
-    position: flex;
-    width: 1px;
-    height: 1px;
-}
+<style>
 
 </style>
