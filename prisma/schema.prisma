@@ -64,23 +64,17 @@ model Cards {
   posY        Int
   room        Rooms?      @relation(fields: [roomId], references: [id])
   roomId      Int?
-  color       Colors?     @relation(fields: [colorId], references: [id])
-  colorId     Int?
-  forme       Formes?     @relation(fields: [formeId], references: [id])
-  formeId     Int?
-  checklist   Checklist[]
+  color       String
+  // forme       Formes?     @relation(fields: [formeId], references: [id])
+  // formeId     Int?
+  // checklist   Checklist[]
 }
 
-model Colors {
-  id    Int     @id
-  color String  @unique
-  Cards Cards[]
-}
 
 model Formes {
   id    Int     @id @default(autoincrement())
   forme String
-  Cards Cards[]
+  // Cards Cards[]
 }
 
 model Checklist {
@@ -88,7 +82,7 @@ model Checklist {
   title      String
   task       String
   isFinished Boolean @default(false)
-  Cards      Cards?  @relation(fields: [cardsId], references: [id])
+  // Cards      Cards?  @relation(fields: [cardsId], references: [id])
   cardsId    Int?
   Task       Tasks[]
 }

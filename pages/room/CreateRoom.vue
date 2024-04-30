@@ -13,6 +13,8 @@
   </template>
   
   <script>
+import { getRoomById } from '~/server/db/rooms';
+
   export default {
     data() {
       return {
@@ -26,7 +28,7 @@
     methods: {
       async createRoom () {
         try {
-          const response = await fetch('/api/rooms/create', {
+          const response = await fetch('/api/rooms/room', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -36,7 +38,6 @@
           const data = await response.json();
           if (response.ok) {
             this.successMessage = 'Création réussi';
-            this.$router.push('/');
           } else {
             this.errorMessage = data.message || 'Une erreur est survenue lors de la création';
           }
