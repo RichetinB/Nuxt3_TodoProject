@@ -14,12 +14,12 @@
   
   <script>
 
+
   const {useAuthUser} = useAuth()
   const user = useAuthUser()
 
 
 
-import { getRoomById } from '~/server/db/rooms';
 
   export default {
     data() {
