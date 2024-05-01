@@ -13,12 +13,11 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    // Créer la room
+    
     const roomData = { name };
     const room = await createRoom(roomData);
 
-    // Créer la relation utilisateur-salle
-    await createUserRoom(userId, room.id); // Correction ici
+    await createUserRoom(userId, room.id); 
 
     return {
       body: roomTransformer(room)

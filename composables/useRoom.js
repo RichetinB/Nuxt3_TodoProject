@@ -1,20 +1,16 @@
 export default () => {
 
-    const getRoom = async () => {
-        try {
-          const data = await useFetchApi('/api/rooms/room');
-          return data.room; 
-        } catch (error) {
-          throw new Error('Failed to fetch room data');
-        }
-      };
-
-      const initRoom = () =>  {
-        return new Promise(async (resolve))
-      }
+  const fetchUserRooms = async () => {
+    try {
+        const response = await useFetchApi('/api/rooms/users_room');
+        return await response.json();
+    } catch (error) {
+        throw new Error('Error fetching user rooms: ' + error.message);
+    }
+};
 
     return {
-        getRoom
+        fetchUserRooms
     }
 
 }

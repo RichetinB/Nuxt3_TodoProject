@@ -40,3 +40,22 @@ export const getUserRoomByName = (userRoomName) => {
     }
   });
 };
+
+
+
+export const getRoomsCreatedByUser = async (userId) => {
+  try {
+    const userRooms = await prisma.users_Rooms.findMany({
+      where: {
+        userId: userId
+      },
+      include: {
+        room: true 
+      }
+    });
+
+    return userRooms.map(userRoom => userRoom.room);
+  } catch (error) {
+    throw new Error(`Error fetching rooms for user ${userId}: ${error.message}`);
+  }
+};

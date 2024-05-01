@@ -13,11 +13,18 @@
   </template>
   
   <script>
+
+  const {useAuthUser} = useAuth()
+  const user = useAuthUser()
+
+
+
   export default {
     data() {
       return {
         formData: {
-          name: ''
+          name: '',
+          userId: user.value.id
         },
         errorMessage: '',
         successMessage: ''
