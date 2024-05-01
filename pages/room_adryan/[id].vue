@@ -21,7 +21,11 @@ import zoomtask from '~/components/task/zoomtask.vue';
             zoomtask
         },
         methods: {
-            AddCard() {
+            async asyncData({ params }) {
+            const roomId = $route.params.id; // Obtenez l'ID à partir des paramètres de route
+            return { roomId };
+            },
+            async AddCard() {
                 this.list_card.push({id: this.count, title:""})
                 this.count +=1
                 console.log(this.list_card)

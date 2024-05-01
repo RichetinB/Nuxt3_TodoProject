@@ -1,11 +1,12 @@
 <template>
-    <div class="task-card" :style="{ transform: `translate(${this.x}px, ${this.y}px)`  }" 
+    <div class="task-card" :style="{ transform: `translate(${this.x}px, ${this.y}px)`, backgroundColor: color  }" 
     @mousedown="onMouseDown"
     @mousemove="onMouseMove"
     @mouseup="onMouseUp"
     @dblclick.native="EmitElement()">
+    <p> la room est : {{ $route.params.id }}</p>
       <label for="task-title">Titre :</label>
-      <input type="text" id="task-title" v-model="card_data.taskTitle" placeholder="Entrez le titre" @focus="FocusTitle()" @blur="BlurTitle()" :style="{ backgroundColor: textAreaColor }">
+      <input type="text" id="task-title" v-model="title" placeholder="Entrez le titre" @focus="FocusTitle()" @blur="BlurTitle()" :style="{ backgroundColor: textAreaColor }">
     </div>
   </template>
   
@@ -13,15 +14,21 @@
 export default {
     data() {
       return {
-        colorActive: false,
         x: 0,
         y: 0,
+        colorActive: false,
+        color: "#F5F5F5",
         dragging: false,
         textAreaColor: "F5F5F5",
-        card_data: {
-          taskTitle: ''
-        }
+        title: 'x',
+        description: 'x',
+        posX: 1,
+        posY: 1,
+        color: "#F5F5F5"
       };
+    },
+    async created() {
+    const d = await this.addCard()
     },
     methods: {
       onMouseDown(event) {
@@ -50,6 +57,18 @@ export default {
       this.$emit('dblclick', {
         card: this.card_data
       });
+    },
+    async addCard(){
+      return await $fetch('/api/card/card', {
+        method: 'POST',
+        body: {
+          title: this.title,
+          description:  this.description,
+          posX: this.x,
+          posY: this.y,
+          color: this.color
+        }
+      })
     }
   }
   };
