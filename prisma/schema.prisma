@@ -45,7 +45,7 @@ model Rooms {
   id    Int           @id @default(autoincrement())
   name  String
   Users Users_Rooms[]
-  Cards Cards[]
+  // Cards Cards[]
 }
 
 model Users_Rooms {
@@ -62,8 +62,8 @@ model Cards {
   description String
   posX        Int
   posY        Int
-  room        Rooms?      @relation(fields: [roomId], references: [id])
-  roomId      Int?
+  // room        Rooms?      @relation(fields: [roomId], references: [id])
+  // roomId      Int?
   color       String
   // forme       Formes?     @relation(fields: [formeId], references: [id])
   // formeId     Int?
