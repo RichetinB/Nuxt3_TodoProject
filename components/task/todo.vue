@@ -14,6 +14,7 @@
 export default {
     data() {
       return {
+        roomId: this.$route.params.id,
         x: 0,
         y: 0,
         colorActive: false,
@@ -29,6 +30,7 @@ export default {
     },
     async created() {
     const d = await this.addCard()
+    console.log(this.roomId)
     },
     methods: {
       onMouseDown(event) {
@@ -66,7 +68,8 @@ export default {
           description:  this.description,
           posX: this.x,
           posY: this.y,
-          color: this.color
+          color: this.color,
+          roomId: parseInt(this.roomId)
         }
       })
     }

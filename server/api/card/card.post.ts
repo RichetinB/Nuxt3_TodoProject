@@ -13,6 +13,7 @@ export default defineEventHandler(async (event) => {
                 posY: body.posY,
                 posX: body.posX,
                 color: body.color,
+                roomId: body.roomId
             },
         }).then((response) => {
             card = response
