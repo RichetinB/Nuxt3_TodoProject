@@ -1,36 +1,30 @@
 <template>
-    <div class="task-card" :style="{ transform: `translate(${this.x}px, ${this.y}px)`, backgroundColor: color  }" 
+    <div class="task-card" :style="{ transform: `translate(${this.x}px, ${this.y}px)`, backgroundColor: this.color  }" 
     @mousedown="onMouseDown"
     @mousemove="onMouseMove"
     @mouseup="onMouseUp"
     @dblclick.native="EmitElement()">
     <p> la room est : {{ $route.params.id }}</p>
       <label for="task-title">Titre :</label>
-      <input type="text" id="task-title" v-model="title" placeholder="Entrez le titre" @focus="FocusTitle()" @blur="BlurTitle()" :style="{ backgroundColor: textAreaColor }">
+      <input type="text" id="task-title" v-model="card.title" placeholder="Entrez le titre" @focus="FocusTitle()" @blur="BlurTitle()" :style="{ backgroundColor: textAreaColor }">
     </div>
   </template>
   
   <script>
 export default {
+  props: {
+    card: Object
+  },
     data() {
       return {
         roomId: this.$route.params.id,
-        x: 0,
-        y: 0,
+        x: this.card.posX,
+        y: this.card.posY,
         colorActive: false,
-        color: "#F5F5F5",
+        color: this.card.color,
         dragging: false,
         textAreaColor: "F5F5F5",
-        title: 'x',
-        description: 'x',
-        posX: 1,
-        posY: 1,
-        color: "#F5F5F5"
       };
-    },
-    async created() {
-    const d = await this.addCard()
-    console.log(this.roomId)
     },
     methods: {
       onMouseDown(event) {
@@ -51,7 +45,7 @@ export default {
       this.textAreaColor = "white"
     },
     BlurTitle() {
-      this.textAreaColor = "#F5F5F5"
+      this.textAreaColor = this.color
     },
     EmitElement(){
       console.log("You Double Click");
@@ -59,19 +53,6 @@ export default {
       this.$emit('dblclick', {
         card: this.card_data
       });
-    },
-    async addCard(){
-      return await $fetch('/api/card/card', {
-        method: 'POST',
-        body: {
-          title: this.title,
-          description:  this.description,
-          posX: this.x,
-          posY: this.y,
-          color: this.color,
-          roomId: parseInt(this.roomId)
-        }
-      })
     }
   }
   };
