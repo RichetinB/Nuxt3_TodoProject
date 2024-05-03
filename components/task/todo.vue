@@ -4,9 +4,9 @@
     @mousemove="onMouseMove"
     @mouseup="onMouseUp"
     @dblclick.native="EmitElement()">
-    <p> la room est : {{ $route.params.id }}</p>
+    <p> la room est : {{ $route.params.id }} est mon id est : {{ card.id }}</p>
       <label for="task-title">Titre :</label>
-      <input type="text" id="task-title" v-model="card.title" placeholder="Entrez le titre" @focus="FocusTitle()" @blur="BlurTitle()" :style="{ backgroundColor: textAreaColor }">
+      <input type="text" id="task-title" v-model="this.title" placeholder="Entrez le titre" @focus="FocusTitle()" @blur="BlurTitle()" :style="{ backgroundColor: textAreaColor }">
     </div>
   </template>
   
@@ -20,6 +20,7 @@ export default {
         roomId: this.$route.params.id,
         x: this.card.posX,
         y: this.card.posY,
+        title: this.card.title,
         colorActive: false,
         color: this.card.color,
         dragging: false,
@@ -38,14 +39,33 @@ export default {
         this.y = event.clientY - this.offsetY;
       }
     },
-    onMouseUp() {
+    async onMouseUp() {
       this.dragging = false;
+      await this.updateCard()
     },
     FocusTitle() {
       this.textAreaColor = "white"
     },
-    BlurTitle() {
+    async BlurTitle() {
       this.textAreaColor = this.color
+      await this.updateCard()
+    },
+    async updateCard(){
+      try {
+        const card_update = await $fetch("/api/card/card", {
+          method: "PUT",
+          body: {
+            id: this.card.id,
+            title: this.title,
+            description: this.card.description,
+            posX: this.x,
+            posY: this.y,
+            color: this.color,
+          }
+        })
+      } catch (error){
+        console.log("Erreur lors des changement de la carte :" + error)
+      }
     },
     EmitElement(){
       console.log("You Double Click");

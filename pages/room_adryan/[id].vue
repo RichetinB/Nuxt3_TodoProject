@@ -7,7 +7,6 @@
 <script>
 import todo from '~/components/task/todo.vue';
 import zoomtask from '~/components/task/zoomtask.vue';
-// const cards = GetCardByRoomId();
 export default {
     mounted(){
         this.GetCardByRoomId();
@@ -21,10 +20,6 @@ export default {
             }
         },
         methods: {
-            // async asyncData({ params }) {
-            //     const roomId = $route.params.id; // Obtenez l'ID à partir des paramètres de route
-            //     return { roomId };
-            // },
             async GetCardByRoomId() {
             try {
                 const cards = await $fetch('/api/card/card', {
