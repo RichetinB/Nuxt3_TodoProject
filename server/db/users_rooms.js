@@ -1,4 +1,5 @@
 import { prisma } from ".";
+import { roomTransformer } from "../transformers/rooms";
 
 export const createUserRoom = (userId, roomId) => {
   return prisma.users_Rooms.create({
@@ -41,21 +42,25 @@ export const getUserRoomByName = (userRoomName) => {
   });
 };
 
-
-
-export const getRoomsCreatedByUser = async (userId) => {
+export const getUserRooms = async (userId) => {
   try {
     const userRooms = await prisma.users_Rooms.findMany({
       where: {
-        userId: userId
+        userId: userId,
       },
       include: {
-        room: true 
-      }
+        room: {
+          select: {
+            id: true,
+            name: true, // Vous pouvez inclure d'autres propriétés pertinentes de la salle ici
+            // Exemple: description: true, capacity: true, etc.
+          }
+        },
+      },
     });
-
-    return userRooms.map(userRoom => userRoom.room);
+    return userRooms.map(userRoom => roomTransformer(userRoom.room));
   } catch (error) {
-    throw new Error(`Error fetching rooms for user ${userId}: ${error.message}`);
+    throw new Error("Erreur lors de la récupération des salles pour l'utilisateur:", error);
   }
 };
+

@@ -1,16 +1,22 @@
 <template>
-    <div>
-      <h1>Inscription</h1>
-      <form @submit.prevent="createRoom">
-        <label>Nom de la room</label>
-        <input type="text" v-model="formData.name" required>
-        
-        <button type="submit">Créer</button>
-      </form>
-      <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
-      <p v-if="successMessage" class="success">{{ successMessage }}</p>
-    </div>
-  </template>
+  <div class="flex flex-col items-center justify-center min-h-screen">
+    <h1 class="text-3xl font-bold mb-6">Créer ta Room</h1>
+    <form @submit.prevent="createRoom" class="max-w-md w-full">
+      <div class="mb-4">
+        <label for="roomName" class="block text-gray-700">Nom de la room</label>
+        <input type="text" id="roomName" v-model="formData.name" required
+               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-400 focus:ring focus:ring-blue-400 focus:ring-opacity-50">
+      </div>
+
+      <button type="submit" class="w-full py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
+        Créer
+      </button>
+    </form>
+
+    <p v-if="errorMessage" class="text-red-600 mt-4">{{ errorMessage }}</p>
+    <p v-if="successMessage" class="text-green-600 mt-4">{{ successMessage }}</p>
+  </div>
+</template>
   
   <script>
 

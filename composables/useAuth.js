@@ -8,6 +8,9 @@ export default () => {
     const useAuthToken = () => useState('auth_token')
     const useAuthUser = () => useState('auth_user')
     const useAuthLoading = () => useState('auth_loading', () => true)
+    const useAuthRoom = () => useState('auth_room');
+    
+
 
     const setToken = (newToken) => {
         const authToken = useAuthToken()
@@ -23,6 +26,12 @@ export default () => {
         const authLoading = useAuthLoading()
         authLoading.value = value
     }
+
+    const setRoom = (newRoom) => {
+        const authRoom = useAuthRoom()
+        authRoom.value = newRoom
+    }
+    
 
     const login = async (username, password) => {
         return new Promise(async (resolve, reject) => {
@@ -58,7 +67,7 @@ export default () => {
         })
     }
 
-    const getUser = () => {
+    const getUser = () => { 
         return new Promise(async (resolve, reject) => {
             try {
                 const data = await useFetchApi('/api/auth/user')
@@ -70,6 +79,20 @@ export default () => {
         })
     }
 
+    const getRoom = () => { 
+        return new Promise(async (resolve, reject) => {
+            try {
+                const data = await useFetchApi('/api/rooms/users_room')
+                console.log("datat room", data.rooms)
+                setRoom(data.rooms)
+                resolve(true)
+            } catch (error) {
+                reject(error)
+            }
+        })
+    }
+    
+    
 
     const reRefreshAccessToken = () => {
         const authToken = useAuthToken()
@@ -95,6 +118,8 @@ export default () => {
             try {
                 await refreshToken()
                 await getUser()
+                await getRoom()
+
 
                 reRefreshAccessToken()
 
@@ -107,6 +132,22 @@ export default () => {
         })
     }
 
+    const logout = () => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                await useFetchApi('/api/auth/logout', {
+                    method: 'POST'
+                })
+
+                setToken(null)
+                setUser(null)
+                resolve()
+            } catch (error) {
+                reject(error)
+            }
+        })
+    }
+
     
     
 
@@ -115,9 +156,11 @@ export default () => {
     return {
         login,
         useAuthUser,
+        useAuthRoom,
         useAuthToken,
         initAuth,
-        useAuthLoading
+        useAuthLoading,
+        logout
     }
 
     

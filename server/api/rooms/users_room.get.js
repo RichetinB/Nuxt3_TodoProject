@@ -1,22 +1,19 @@
-import { getRoomsCreatedByUser } from "~/server/db/users_rooms";
-
+import { prisma } from "~/server/db";
+import { getUserRooms } from "~/server/db/users_rooms";
 
 export default defineEventHandler(async (event) => {
+    const userId = event.context?.auth?.user?.id;
+    console.log("i am the userId", userId);
+
     try {
-        const userId = event.context.params
-        if (!userId) {
-            throw new Error("User ID is missing in request headers");
-        }
-
-        const rooms = await getRoomsCreatedByUser(userId);
-
-        return {
-            body: {
-                rooms
-            }
-        };
+        const roomsForUser = await getUserRooms(userId);
+        console.log(roomsForUser);
+        return { roomsForUser };
     } catch (error) {
-        console.error('Error fetching rooms:', error);
-        return sendError(event, createError({ statusCode: 500, statusMessage: 'Failed to fetch rooms' }));
+        console.error("Erreur lors de la récupération des salles:", error);
+        return sendError(event, createError({
+            statusCode: 500,
+            statusMessage: 'Internal Server Error'
+        }));
     }
 });

@@ -5,7 +5,9 @@ import { getUserById } from "../db/users"
 
 export default defineEventHandler(async (event) => {
     const endpoints = [
-        '/api/auth/user'
+        '/api/auth/user',
+        '/api/rooms/users_room',
+        '/api/user/user'
     ]
 
     const isHandleByThisMiddleware = endpoints.some(endpoint => {
@@ -41,7 +43,7 @@ export default defineEventHandler(async (event) => {
         event.context.auth = {user}
     } catch (error) {
         
-        return
+        return  
     }
 
 })

@@ -1,16 +1,20 @@
-export default () => {
+// export default () => {
 
-  const fetchUserRooms = async () => {
-    try {
-        const response = await useFetchApi('/api/rooms/users_room');
-        return await response.json();
-    } catch (error) {
-        throw new Error('Error fetching user rooms: ' + error.message);
-    }
-};
+//     // const getRooms = () => {
+//     //         try {
+//     //             const response =  useFetchApi('/api/rooms/users_room', {
+//     //                 method: 'GET'
+                    
+//     //             })
 
-    return {
-        fetchUserRooms
-    }
+//     //             resolve(response)
+//     //         } catch (error) {
+//     //             reject(error)
+//     //         }
+//     // }
 
-}
+//     // return {
+//     //     getRooms
+//     // }
+
+// }

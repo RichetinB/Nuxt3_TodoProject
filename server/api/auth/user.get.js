@@ -6,4 +6,4 @@ export default defineEventHandler(async (event) => {
         user: userTransformer(event.context.auth?.user)
     }
 
-})
+})  

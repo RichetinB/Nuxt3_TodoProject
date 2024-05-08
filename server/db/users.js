@@ -28,3 +28,18 @@ export const getUserById = (userId) => {
         }
     })
 }
+
+
+
+export const updateUser = (userId, userData) => {
+    try {
+      const updatedUser = prisma.user.update({
+        where: { id: userId },
+        data: userData,
+      });
+      return updatedUser;
+    } catch (error) {
+      throw new Error(`Erreur lors de la mise à jour de l'utilisateur : ${error.message}`);
+    }
+  };
+  

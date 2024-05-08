@@ -1,48 +1,43 @@
 <template>
-  <div :class="{'dark': darkMode}">
+  <div :class="{ 'dark': darkMode }">
     <LoadingPage v-if="isAuthLoading" />
 
     <!-- APP -->
-    <div v-else-if="user" class="min-h-full">
-      <div class="grid grid-cols-12 mx-auto sm:px-6 lg:max-w-7xl lg:px-8 lg:gap-5">
+    <div v-else-if="user" class="min-h-screen flex flex-col justify-center items-center">
+      <!-- Header -->
+      <header class="bg-blue-500 text-white py-4 px-6 text-center w-full">
+        <h1 class="text-xl font-semibold">TodoPierro</h1>
+      </header>
 
-        <!-- LEFT SIDE BAR -->
-        <div class="border-2 border-red-500 md:block xs-col-span-1 xl:col-span-2">
-          <div class="sticky top-0">
-            <SidebarLeft/>
+      <!-- Main content -->
+      <main class="flex-grow p-6">
+        <div class="max-w-xl mx-auto">
+          <MainSection title="Home" :loading="loading">
+            {{ user.username }}
+          </MainSection>
+
+          <button @click="handleUserLogout" class="bg-red-500 text-white px-4 py-2 rounded-md mt-4">Déconnexion</button>
+
+          <router-link to="/room/CreateRoom" class="bg-blue-500 text-white px-4 py-2 rounded-md mt-2">Créer une room</router-link>
+
+          <router-link to="/account" class="bg-blue-500 text-white px-4 py-2 rounded-md mt-2">Voir Compte</router-link>
+
+          <div>
+            <h2 class="text-lg font-semibold mt-8">Mes Salles</h2>
+            <ul v-if="rooms" class="mt-4">
+              <li v-for="room in rooms" :key="room.id" class="py-2">
+                {{ room.name }} 
+              </li>
+            </ul>
           </div>
         </div>
-
-        <!-- Main content -->
-        <main class="col-span-12 bg-red-500 md:col-span-8 xl:col-span-6">
-          <div>
-            <MainSection title="Home" :loading="loading">
-              {{ user.username }}
-            </MainSection>
-
-            <NuxtLink to="/room/CreateRoom">
-              Créer une room
-            </NuxtLink>
-
-            <div>
-              <h2>Mes Salles</h2>
-              <ul>
-                <li v-for="room in rooms" :key="room.id">
-                  {{ room.name }} 
-                </li>
-              </ul>
-            </div>
-
-          </div>
-        </main>
-
-        <!-- RIGHT SideBar -->
-      </div>
+      </main>
     </div>
 
     <AuthPage v-else/>
   </div>
 </template>
+
 
 <script setup>
 import { useRouter } from 'vue-router'
@@ -50,44 +45,36 @@ import Cookies from 'js-cookie'
 import { ref, onBeforeMount } from 'vue'
 
 const darkMode = ref(false)
-const { useAuthUser, initAuth, useAuthLoading } = useAuth()
+const { useAuthUser, initAuth, useAuthLoading, logout, useAuthRoom } = useAuth()
 const user = useAuthUser()
 const isAuthLoading = useAuthLoading()
 const router = useRouter()
+
+const rooms = useAuthRoom();
+
+console.log("je suis room", rooms);
 
 onBeforeMount(() => {
   initAuth()
 })
 
-const {fetchUserRooms} = useRoom()
- 
-const rooms = ref([]);
 
-onMounted(async () => {
-  try {
-    const { rooms: fetchedRooms } = await fetchUserRooms();
-    rooms.value = fetchedRooms;
-  } catch (error) {
-    console.error('Error fetching rooms:', error);
-  }
-});
 
-// const rooms = ref([])
+// const rooms = ref(null);
 
-// const fetchUserRooms = async () => {
-//   try {
-//     const response = await $fetch('/api/rooms/users_room');
-    
-//     if (!response.ok) {
-//       throw new Error('Network response was not ok');
+// // Appeler le middleware serveur pour récupérer les salles associées à l'utilisateur
+// onMounted(async () => {
+//     try {
+//         const response = await $fetch('/api/rooms/users_room');
+//         rooms.value = response;
+//         console.log(rooms)
+//     } catch (error) {
+//         console.error("Erreur lors de la récupération des salles:", error);
 //     }
-    
-//     const data = await response.json();
-//     rooms.value = data.rooms;
-//   } catch (error) {
-//     console.error('Error fetching user rooms:', error);
-//   }
-// }
+// });
 
-// fetchUserRooms() 
+
+function handleUserLogout() {
+    logout()
+}
 </script>
