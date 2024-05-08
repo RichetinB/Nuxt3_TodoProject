@@ -1,9 +1,36 @@
 <template>
     <h1> Je suis La page Room numero {{ $route.params.id }}</h1>
+    <h2 v-if="rooms.length === 0">Aucune chambre trouvée.</h2>
+      <h2 v-else >{{ rooms.name }}</h2>
     <button @click="addCard"> Add Card </button>
     <todo class="card" v-for="(card) in this.list_card" :key="card.id" :card="card" @access_popup="handleSelected"/>
     <zoomtask v-if="isPopupVisible == true" @close="closePopup()" :isVisible="isPopupVisible" :card="this.selectedItemInfo" @delete_card="deleteCard" @changeDescription="changeDescription" @changeColor="changeColor"></zoomtask>
 </template> 
+
+
+<script setup>
+import { useRoute } from 'vue-router';
+const route = useRoute();
+const roomId = route.params.id;
+const rooms = ref([]);
+  
+  onMounted(async () => {
+  try {
+    rooms.value = await getRoom(roomId);
+
+    console.log("rooms.value", rooms.value.name)
+  } catch (error) {
+    console.error('Error fetching room:', error);
+  }
+});
+  
+
+  
+  async function getRoom(id) {
+     return await $fetch(`/api/rooms/${id}`);
+    
+  }
+</script>
 
 <script>
 import todo from '~/components/task/todo.vue';
@@ -106,6 +133,7 @@ export default {
         },
     }
 </script>
+
 
 <style>
 
