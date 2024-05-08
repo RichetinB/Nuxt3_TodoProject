@@ -1,74 +1,80 @@
 <template>
-    <div class="task-card" :style="{ transform: `translate(${this.x}px, ${this.y}px)`, backgroundColor: color  }" 
+    <div class="task-card" :style="{ transform: `translate(${this.todo_card.posX}px, ${this.todo_card.posY}px)`, backgroundColor: this.card.color  }" 
     @mousedown="onMouseDown"
     @mousemove="onMouseMove"
     @mouseup="onMouseUp"
-    @dblclick.native="EmitElement()">
-    <p> la room est : {{ $route.params.id }}</p>
-      <label for="task-title">Titre :</label>
-      <input type="text" id="task-title" v-model="title" placeholder="Entrez le titre" @focus="FocusTitle()" @blur="BlurTitle()" :style="{ backgroundColor: textAreaColor }">
+    @dblclick.native="EmitElement">
+      <label for="task-title" @dblclick.stop></label>
+      <input @mousedown.stop @dblclick.stop type="text" id="task-title" v-model="this.todo_card.title" placeholder="Entrez le titre" @focus="FocusTitle()" @blur="BlurTitle()" :style="{ backgroundColor: this.card.color
+       }">
     </div>
   </template>
-  
   <script>
 export default {
+  props: {
+    card: reactive(Object)
+  },
     data() {
       return {
-        x: 0,
-        y: 0,
+        todo_card: reactive({...this.card}),
+        roomId: this.$route.params.id,
         colorActive: false,
-        color: "#F5F5F5",
         dragging: false,
-        textAreaColor: "F5F5F5",
-        title: 'x',
-        description: 'x',
-        posX: 1,
-        posY: 1,
-        color: "#F5F5F5"
+        textAreaColor: this.card.color
       };
-    },
-    async created() {
-    const d = await this.addCard()
     },
     methods: {
       onMouseDown(event) {
       this.dragging = true;
-      this.offsetX = event.clientX - this.x;
-      this.offsetY = event.clientY - this.y;
+      this.offsetX = event.clientX - this.todo_card.posX;
+      this.offsetY = event.clientY - this.todo_card.posY;
     },
     onMouseMove(event) {
       if (this.dragging) {
-        this.x = event.clientX - this.offsetX;
-        this.y = event.clientY - this.offsetY;
+        this.todo_card.posX = event.clientX - this.offsetX;
+        this.todo_card.posY = event.clientY - this.offsetY;
       }
     },
-    onMouseUp() {
+    async onMouseUp() {
       this.dragging = false;
+      await this.updatePos()
     },
     FocusTitle() {
-      this.textAreaColor = "white"
+      this.card.color = "white"
     },
-    BlurTitle() {
-      this.textAreaColor = "#F5F5F5"
+    async BlurTitle() {
+      this.card.color = this.todo_card.color
+      await this.updateTitle()
+    },
+    async updateTitle(){
+      try {
+        const card_upd = await $fetch("/api/card/card", {
+          method: "PUT",
+          body: {
+            id: this.todo_card.id,
+            title: this.todo_card.title,
+          }
+        })
+      } catch (error){
+        console.log("Erreur lors des changement de la carte :" + error)
+      }
+    },
+    async updatePos(){
+      try {
+        const card_upd = await $fetch("/api/card/card", {
+          method: "PUT",
+          body: {
+            id: this.todo_card.id,
+            posX: this.todo_card.posX,
+            posY: this.todo_card.posY
+          }
+        })
+      } catch (error){
+        console.log("Erreur lors des changement de la carte :" + error)
+      }
     },
     EmitElement(){
-      console.log("You Double Click");
-      console.log(this.card_data)
-      this.$emit('dblclick', {
-        card: this.card_data
-      });
-    },
-    async addCard(){
-      return await $fetch('/api/card/card', {
-        method: 'POST',
-        body: {
-          title: this.title,
-          description:  this.description,
-          posX: this.x,
-          posY: this.y,
-          color: this.color
-        }
-      })
+      this.$emit('access_popup', this.todo_card.id);
     }
   }
   };
@@ -82,12 +88,14 @@ export default {
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
     width: 300px;
     position: absolute;
+    z-index: 999;
   }
   
   label {
     color: #8BC34A; /* Vert citron */
     font-weight: bold;
     margin-top: 5px;
+    height: 25px;
     display: block;
   }
   
@@ -95,7 +103,7 @@ export default {
     width: 100%;
     padding: 5px;
     margin-top: 5px;
-    border: 1px solid #F5F5F5;
+    border: none;
     border-radius: 3px;
     text-align: center;
   }
