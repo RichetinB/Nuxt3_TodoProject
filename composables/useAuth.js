@@ -9,6 +9,8 @@ export default () => {
     const useAuthUser = () => useState('auth_user')
     const useAuthLoading = () => useState('auth_loading', () => true)
     const useAuthRoom = () => useState('auth_room');
+    console.log("data auth_room", useState('auth_room'))
+
     
 
 
@@ -46,6 +48,7 @@ export default () => {
 
                 setToken(data.access_token)
                 setUser(data.user)
+                setRoom(data.roomsForUser)
     
                 resolve(true)
             } catch (error) {
@@ -83,8 +86,8 @@ export default () => {
         return new Promise(async (resolve, reject) => {
             try {
                 const data = await useFetchApi('/api/rooms/users_room')
-                console.log("datat room", data.rooms)
-                setRoom(data.rooms)
+
+                setRoom(data.roomsForUser)
                 resolve(true)
             } catch (error) {
                 reject(error)
@@ -119,6 +122,7 @@ export default () => {
                 await refreshToken()
                 await getUser()
                 await getRoom()
+                
 
 
                 reRefreshAccessToken()

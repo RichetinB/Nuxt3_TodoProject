@@ -1,28 +1,46 @@
 <template>
-  <div>
-    <h1>Inscription</h1>
-    <form @submit.prevent="registerUser">
-      <label>Nom d'utilisateur</label>
-      <input type="text" v-model="formData.username" required>
-      
-      <label>Email</label>
-      <input type="email" v-model="formData.email" required>
-      
-      <label>Mot de passe</label>
-      <input type="password" v-model="formData.password" required>
-      
-      <label>Confirmer le mot de passe</label>
-      <input type="password" v-model="formData.repeatPassword" required>
-      
-      <label>Nom</label>
-      <input type="text" v-model="formData.name" required>
-      
-      <button type="submit">S'inscrire</button>
+  <div class="max-w-md mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-6">Inscription</h1>
+    <form @submit.prevent="registerUser" class="space-y-4">
+      <div>
+        <label for="username" class="block text-sm font-medium text-gray-700">Nom d'utilisateur</label>
+        <input id="username" type="text" v-model="formData.username" required
+               class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-400 focus:ring focus:ring-blue-400 focus:ring-opacity-50">
+      </div>
+
+      <div>
+        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+        <input id="email" type="email" v-model="formData.email" required
+               class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-400 focus:ring focus:ring-blue-400 focus:ring-opacity-50">
+      </div>
+
+      <div>
+        <label for="password" class="block text-sm font-medium text-gray-700">Mot de passe</label>
+        <input id="password" type="password" v-model="formData.password" required
+               class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-400 focus:ring focus:ring-blue-400 focus:ring-opacity-50">
+      </div>
+
+      <div>
+        <label for="repeat-password" class="block text-sm font-medium text-gray-700">Confirmer le mot de passe</label>
+        <input id="repeat-password" type="password" v-model="formData.repeatPassword" required
+               class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-400 focus:ring focus:ring-blue-400 focus:ring-opacity-50">
+      </div>
+
+      <div>
+        <label for="name" class="block text-sm font-medium text-gray-700">Nom</label>
+        <input id="name" type="text" v-model="formData.name" required
+               class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-400 focus:ring focus:ring-blue-400 focus:ring-opacity-50">
+      </div>
+
+      <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
+        S'inscrire
+      </button>
     </form>
-    <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
-    <p v-if="successMessage" class="success">{{ successMessage }}</p>
+    <p v-if="errorMessage" class="text-red-600 mt-4">{{ errorMessage }}</p>
+    <p v-if="successMessage" class="text-green-600 mt-4">{{ successMessage }}</p>
   </div>
 </template>
+
 
 <script>
 export default {

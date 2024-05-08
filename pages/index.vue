@@ -47,12 +47,12 @@ import { ref, onBeforeMount } from 'vue'
 const darkMode = ref(false)
 const { useAuthUser, initAuth, useAuthLoading, logout, useAuthRoom } = useAuth()
 const user = useAuthUser()
+
+
 const isAuthLoading = useAuthLoading()
 const router = useRouter()
 
 const rooms = useAuthRoom();
-
-console.log("je suis room", rooms);
 
 onBeforeMount(() => {
   initAuth()
