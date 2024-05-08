@@ -9,7 +9,7 @@ export default () => {
     const useAuthUser = () => useState('auth_user')
     const useAuthLoading = () => useState('auth_loading', () => true)
     const useAuthRoom = () => useState('auth_room');
-    console.log("data auth_room", useState('auth_room'))
+
 
     
 
@@ -48,8 +48,7 @@ export default () => {
 
                 setToken(data.access_token)
                 setUser(data.user)
-                setRoom(data.roomsForUser)
-    
+                
                 resolve(true)
             } catch (error) {
                 reject(error); 
@@ -120,13 +119,15 @@ export default () => {
             setAuthLoading(true)
             try {
                 await refreshToken()
-                await getUser()
-                await getRoom()
+                await getUser();
+
+                await getRoom();
                 
 
 
                 reRefreshAccessToken()
-
+                
+                
                 resolve(true)
             } catch (error) {
                 reject(error)
@@ -152,11 +153,6 @@ export default () => {
         })
     }
 
-    
-    
-
-    
-    
     return {
         login,
         useAuthUser,

@@ -1,19 +1,25 @@
+// API route
 import { prisma } from "~/server/db";
+import bcrypt from "bcrypt";
+
 
 export default defineEventHandler(async(event) => {
     try {
         const body = await readBody(event)
-
+        
+        const hashedPassword = bcrypt.hashSync(body.password, 10);
+    
         const userData = {
-            name: body.name
-          };
-        const userId = event.context?.auth?.user?.id
-        console.log("je suis userId", userId)
-
-
+            id: body.id, 
+            name: body.name,
+            email: body.email,
+            username: body.username,
+            password: hashedPassword
+        };
+        
         const updatedUser = await prisma.user.update({
-            where: { id: userId },
-            data: userData,
+            where: { id: userData.id },
+            data: userData
         });
 
         return updatedUser;

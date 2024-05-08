@@ -6,8 +6,7 @@ import { getUserById } from "../db/users"
 export default defineEventHandler(async (event) => {
     const endpoints = [
         '/api/auth/user',
-        '/api/rooms/users_room',
-        '/api/user/user'
+        '/api/rooms/users_room'
     ]
 
     const isHandleByThisMiddleware = endpoints.some(endpoint => {

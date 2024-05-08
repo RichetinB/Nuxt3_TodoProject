@@ -24,11 +24,9 @@
 
           <div>
             <h2 class="text-lg font-semibold mt-8">Mes Salles</h2>
-            <ul v-if="rooms" class="mt-4">
-              <li v-for="room in rooms" :key="room.id" class="py-2">
-                {{ room.name }} 
-              </li>
-            </ul>
+            <li v-for="room in rooms" :key="room.id" class="py-2">
+              <nuxt-link :to="`/room/${room.id}`">{{ room.name }}</nuxt-link>
+            </li>
           </div>
         </div>
       </main>
@@ -59,19 +57,6 @@ onBeforeMount(() => {
 })
 
 
-
-// const rooms = ref(null);
-
-// // Appeler le middleware serveur pour récupérer les salles associées à l'utilisateur
-// onMounted(async () => {
-//     try {
-//         const response = await $fetch('/api/rooms/users_room');
-//         rooms.value = response;
-//         console.log(rooms)
-//     } catch (error) {
-//         console.error("Erreur lors de la récupération des salles:", error);
-//     }
-// });
 
 
 function handleUserLogout() {
