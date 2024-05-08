@@ -6,7 +6,7 @@
     <div v-else-if="user" class="min-h-screen flex flex-col justify-center items-center">
       <!-- Header -->
       <header class="bg-blue-500 text-white py-4 px-6 text-center w-full">
-        <h1 class="text-xl font-semibold">TodoPierro</h1>
+        <h1 class="text-xl font-semibold font-righteous-regular">TodoPierro</h1>
       </header>
 
       <!-- Main content -->
@@ -36,7 +36,6 @@
   </div>
 </template>
 
-
 <script setup>
 import { useRouter } from 'vue-router'
 import Cookies from 'js-cookie'
@@ -46,20 +45,23 @@ const darkMode = ref(false)
 const { useAuthUser, initAuth, useAuthLoading, logout, useAuthRoom } = useAuth()
 const user = useAuthUser()
 
-
 const isAuthLoading = useAuthLoading()
 const router = useRouter()
-
-const rooms = useAuthRoom();
+const rooms = useAuthRoom()
 
 onBeforeMount(() => {
   initAuth()
 })
 
-
-
-
 function handleUserLogout() {
     logout()
 }
 </script>
+
+<style>
+.font-righteous-regular {
+  font-family: "Righteous", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+</style>

@@ -48,7 +48,7 @@ export default () => {
 
                 setToken(data.access_token)
                 setUser(data.user)
-                
+                location.reload();
                 resolve(true)
             } catch (error) {
                 reject(error); 
@@ -146,6 +146,7 @@ export default () => {
 
                 setToken(null)
                 setUser(null)
+                setRoom(null)
                 resolve()
             } catch (error) {
                 reject(error)
