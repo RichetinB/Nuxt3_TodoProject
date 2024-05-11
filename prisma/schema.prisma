@@ -67,7 +67,7 @@ model Cards {
   color       String
   // forme       Formes?     @relation(fields: [formeId], references: [id])
   // formeId     Int?
-  // checklist   Checklist[]
+  checklist   Checklist[]
 }
 
 
@@ -80,9 +80,8 @@ model Formes {
 model Checklist {
   id         Int     @id @default(autoincrement())
   title      String
-  task       String
   isFinished Boolean @default(false)
-  // Cards      Cards?  @relation(fields: [cardsId], references: [id])
+  Cards      Cards?  @relation(fields: [cardsId], references: [id])
   cardsId    Int?
   Task       Tasks[]
 }

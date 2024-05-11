@@ -70,7 +70,7 @@ export default {
                     description:  "",
                     posX: 1,
                     posY: 1,
-                    color: "#F5F5F5",
+                    color: "#f1f2f4",
                     roomId: parseInt(this.$route.params.id)
                     },
                 })

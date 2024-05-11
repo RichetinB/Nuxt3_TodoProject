@@ -4,15 +4,9 @@ const prisma = new PrismaClient();
 export default defineEventHandler(async (event) => {
     const body = await readBody(event)
 
-    const card = await prisma.cards.delete({
+    const checklist = await prisma.checklist.delete({
         where: {
             id: body.id
-        }
-    })
-
-    const checklistnull = await prisma.checklist.deleteMany({
-        where: {
-            cardsId: null
         }
     })
 
@@ -21,7 +15,7 @@ export default defineEventHandler(async (event) => {
             checklistId: null
         }
     })
-    return card
+    return checklist
 })
 
 

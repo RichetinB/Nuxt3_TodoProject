@@ -28,6 +28,7 @@
         </li>
         </ul>
       </div>
+
       <div class="main">
           <div id="header"> 
             <h1> {{ popup_card.title }} </h1> 
@@ -35,7 +36,10 @@
           <div id="description"> 
             <textarea v-model="this.popup_card.description" @blur="Blur()"> {{ this.popup_card.description }}</textarea>
           </div>
-          <div id="checkbox"> je suis les checklist </div>
+          <div id="checkbox">
+            <button @click="AddChecklist"> Add Checklist </button>
+            <checklist class="list-checkbox" v-for="(check) in this.list_checklist" :checklist="check" @DeleteChecklist="DeleteChecklist"></checklist>
+          </div>
       </div>
       </div>
     </div>
@@ -52,7 +56,11 @@
 <textarea class="text_description" v-model="this.card.description" cols="50" rows="10" placeholder="Veuillez Fournir une Description a votre Tache" @blur="Blur()"></textarea> -->
 
 <script>
+import checklist from './checklist.vue'
 export default {
+  async mounted(){
+    await this.GetChecklistByCardId()
+  },
   props: {
     isVisible: Boolean,
     card: Object
@@ -60,7 +68,8 @@ export default {
   data() {
     return {
       popup_card: { ...this.card},
-      ParameterIsOpen: false
+      ParameterIsOpen: false,
+      list_checklist : []
     }
   },
   methods: {
@@ -72,6 +81,60 @@ export default {
         container.style.backgroundColor = event.target.value;
       }
     },
+    async DeleteChecklist(data){
+      this.list_checklist.forEach((obj) => {
+        if (obj.id == data){
+            const index = this.list_checklist.indexOf(obj)
+            const debug = this.list_checklist.splice(index, 1)
+          }
+      })
+      try {
+        const deleteChecklist = await $fetch("/api/checklist/checklist", {
+          method: 'DELETE',
+          body: {
+            id: data
+          }
+        })
+        console.log(deleteChecklist)
+      }catch (error) {
+        console.log(error)
+      }
+    },
+    async AddChecklist(){
+      this.list_checklist.push( {
+        id: null,
+        cardsId: this.card.id,
+        isFinished: false,
+        title: ""
+      })
+      try {
+        const addChecklist = await $fetch("/api/checklist/checklist", {
+          method: "POST",
+          body: {
+            cardsId: this.card.id,
+          }
+        })
+        this.list_checklist[this.list_checklist.length - 1].id = addChecklist.id;
+        this.GetChecklistByCardId()
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    async GetChecklistByCardId() {
+      try {
+        const getChecklist = await $fetch("/api/checklist/checklist", {
+          method: "GET",
+          params: {
+            card: this.card.id
+          }
+        })
+        console.log(getChecklist)
+        this.list_checklist = getChecklist
+          } catch (error) {
+            console.log(error)
+          }
+      },
+
     async updateAll(event) {
       var container = document.getElementById('container')
       container.style.backgroundColor = event.target.value;
@@ -142,7 +205,10 @@ export default {
         console.log("Erreur lors des changement de la carte :" + error)
       }
     },
-  }
+  },
+  components: {
+      checklist
+    }
 }
 </script>
 
@@ -163,17 +229,17 @@ export default {
     z-index: 1250;
   }
   .container {
-    background-color: aqua;
+    background-color: #f1f2f4;
     position: relative;
     width: 50%;
-    min-height: 100%;
-    margin: 0 auto;
+    margin: 5vh auto;
     border-radius: 10px;
-    z-index: 1500; /* Assurez-vous que la popup est au-dessus de l'overlay */
+    z-index: 1500; 
+    box-shadow: 0 0 10px rgba(0,0,0,0.5); 
   }
 
   .main div{
-    background-color: teal;
+    background-color: #f1f2f4;
     text-align: center;
     width: 90%;
     margin: 30px auto;
@@ -181,12 +247,33 @@ export default {
     min-height: 100%;
   }
 
+  .main {
+    overflow-y: auto;
+    /* overflow-x: none; */
+    max-height: 90vh
+  }
+
   #header {
     height: 5vh;
+    background-color: #ffffff;
+    border-radius: 10px;
+    border: 1px solid black;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5); 
+    display: flex;
+  }
+
+  #header h1 {
+    font-weight: bold;
+    font-size: 1.3rem;
+    margin: auto
   }
 
   #description {
     height: 30vh;
+    background-color: #ffffff;
+    border-radius: 10px;
+    border: 1px solid black;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5); 
   }
 
   #description textarea {
@@ -198,7 +285,12 @@ export default {
   }
 
   #checkbox {
-    height: 48vh;
+    min-height: 50vh;
+    display: block;
+    background-color: #ffffff;
+    border-radius: 10px;
+    border: 1px solid black;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5); 
   }
 
   .onglet_parameter {
@@ -215,6 +307,7 @@ export default {
     background-color: white;
     text-align: center;
     border-radius: 10px;
+    z-index: 1700;
   }
 
   .btn_parameter :hover {
@@ -232,9 +325,10 @@ export default {
 
 
   .container-param {
+    z-index: 1700;
     position: absolute;
-    right: 25px;
-    top: -25px;
+    right: 50px;
+    top: 0;
   }
 
 
@@ -245,5 +339,10 @@ export default {
     border: 1px solid black;
     border-radius: 150px;
     background-color: white;
+  }
+
+  .list-checkbox {
+    display: inline-block;
+    min-height: auto;
   }
 </style>

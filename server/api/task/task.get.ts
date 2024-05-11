@@ -1,0 +1,19 @@
+import { PrismaClient } from "@prisma/client";
+import { defineEventHandler, H3Event } from 'h3';
+const prisma = new PrismaClient();
+
+export default defineEventHandler(async (event:H3Event) => {
+    const query = getQuery(event)
+    const Id = query.checklistId;
+
+    const where = parseInt(Id as string, 10);
+
+
+    return await prisma.tasks.findMany({
+        where:{
+            checklistId: where
+        }
+    }).then((response) => {
+        return response
+    })
+})
