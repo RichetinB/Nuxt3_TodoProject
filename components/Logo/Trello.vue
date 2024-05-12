@@ -8,6 +8,6 @@
             </g>
         </svg> -->
 
-        <img src="/components/Logo/favicon.ico" alt="Trello Logo" class="text-blue-400 dark:text-white">
+        <img src="/static/logo.png" alt="Trello Logo" class="text-blue-400 dark:text-white">
 
 </template>

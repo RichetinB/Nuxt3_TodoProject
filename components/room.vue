@@ -4,6 +4,14 @@
     </div>
 </template>
 
+<script>
+export default {
+    props: {
+        title: Object
+    }
+}
+</script>
+
 <style scoped>
 
 .main_room {

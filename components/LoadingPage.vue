@@ -3,8 +3,9 @@
         <div class="absolute w-20 h-20 animate-ping">
             <LogoTrello />
         </div>
-
     </div>
 </template>
-<script setup>
+
+<script>
 </script>
+<style></style>
