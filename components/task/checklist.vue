@@ -20,6 +20,12 @@
 export default {
     async mounted(){
         await this.GetTaskByChecklistId()
+        const checking = this.AllCheckboxIsChecked()
+                if (checking){
+                    this.checklistIsFinished = true
+                } else {
+                    this.checklistIsFinished = false
+                }
     },
     props: {
         checklist: Object
