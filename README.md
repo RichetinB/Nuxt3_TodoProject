@@ -31,8 +31,35 @@ npm uninstall @prisma/cli -g
 npm install prisma -g
 
 npm install nuxt
+
+npm install -D @nuxtjs/google-fonts
 ```
 
 3. Configurer la base de données :
    
    - Créer le fichié .env et copier le contenue ci-dessous
+  
+```
+DATABASE_URL="file:dev.db"
+
+JWT_ACCESS_TOKEN_SECRET = 'my_super_secret_for_access_token'
+JWT_REFRESH_TOKEN_SECRET = 'my_super_secret_for_refresh_token'
+```
+
+4. Lancer l'application :
+
+```
+npm run dev
+```
+L'application sera accessible à l'adresse http://localhost:3000.
+
+Il est également possible d'accédé à notre db via la commande ```prisma studio```
+
+## Technologies utilisées
+
+- Vue.js / Nuxt.js
+- Prisma ORM
+
+## Auteur
+
+Ce projet a été vévelopper par Baptiste RICHETIN, Mathéo BAYLE, Adryan COURTIAL
