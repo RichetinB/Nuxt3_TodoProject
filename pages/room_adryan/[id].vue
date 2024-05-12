@@ -1,14 +1,22 @@
 <template>
-    <header class="bg-blue-500 text-white py-4 px-6 text-center w-full">
-        <h1 class="text-xl font-semibold font-righteous-regular">TodoPierro</h1>
+    <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+    </head>
+    <img src="/static/logo.png" id="d" alt="Trello Logo" class="text-blue-400 dark:text-white">
+    <div id="background">
+    <header id="nav" class="bg-blue-500 text-white py-4 px-6 text-center w-full">
+        <a href="/"> Home </a><h1 id="page" class="text-xl font-semibold font-righteous-regular">TodoPierro</h1>
       </header>
         <div id="header_page">
-            <h2 v-if="rooms.length === 0">Aucune chambre trouvée.</h2>
+            <h2 v-if="rooms.length === 0"> Aucune chambre trouvée. </h2>
             <h2 v-else id="titre_page">{{ rooms.name }}</h2>
         </div>  
         <button @click="addCard"> Add Card </button>
         <todo class="card" v-for="(card) in this.list_card" @ChangeTitle="ChangeTitle" :key="card.id" :card="card" @access_popup="handleSelected"/>
         <zoomtask v-if="isPopupVisible == true" @close="closePopup()" :isVisible="isPopupVisible" :card="this.selectedItemInfo"  @delete_card="deleteCard" @changeDescription="changeDescription" @changeColor="changeColor"></zoomtask>
+    </div>
 </template> 
 
 
@@ -172,8 +180,14 @@ export default {
 </script>
 
 
-<style>
+<style scoped>
 body {
+    height: 100vh;
+    width: 100%;
+}
+
+#background {
+    font-family: "Permanent Marker", cursive;
     height: 100vh;
     width: 100%;
     background-image: url(/static/background.jpg);
@@ -182,8 +196,17 @@ body {
     background-repeat: repeat;
 }
 
+#nav{
+    display: flex;
+    height: 72px;
+}
+
 header {
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+header h1 {
+    margin: auto;
 }
 
 #header_page {
@@ -202,10 +225,22 @@ header {
     margin: auto 20px;
 }
 
+#page{
+    /* font-family: ; */
+}
+
 button {
     border: solid black 1px;
     padding: 10px;
     background-color: rgb(99, 209, 99);
+}
+
+#d {
+    height: 175px;
+    width: 150px;
+    position: absolute;
+    margin-left: 200px;
+    padding: 0;
 }
 
 
