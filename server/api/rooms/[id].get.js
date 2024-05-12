@@ -12,12 +12,10 @@ export default defineEventHandler(async (event) => {
             }
         });
 
-        // Vérifier si la chambre a été trouvée
         if (!room) {
             throw new Error("La chambre n'a pas été trouvée");
         }
 
-        // Retourner la chambre trouvée
         return room;
     } catch (error) {
         console.error("Erreur lors de la récupération de la chambre :", error);

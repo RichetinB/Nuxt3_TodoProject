@@ -1,19 +1,45 @@
 <template>
-        <h1> Je suis La page Room numero {{ $route.params.id }}</h1> {{ user.id }}
-        <h2 v-if="rooms.length === 0">Aucune chambre trouvée.</h2>
-        <h2 v-else >{{ rooms.name }}</h2>
-        <button @click="addCard"> Add Card </button>
-        <todo class="card" v-for="(card) in this.list_card" :key="card.id" :card="card" @access_popup="handleSelected"/>
-        <zoomtask v-if="isPopupVisible == true" @close="closePopup()" :isVisible="isPopupVisible" :card="this.selectedItemInfo" @delete_card="deleteCard" @changeDescription="changeDescription" @changeColor="changeColor"></zoomtask>
-</template> 
+    <div>
+      <h1>Je suis la page Room numéro {{ $route.params.id }}</h1>
+      {{ user.id }}
+      <h2 v-if="rooms.length === 0">Aucune chambre trouvée.</h2>
+      <h2 v-else>{{ rooms.name }}</h2>
+      <button @click="addCard">Ajouter une carte</button>
+      <todo class="card" v-for="card in list_card" :key="card.id" :card="card" @access_popup="handleSelected" />
+      <zoomtask v-if="isPopupVisible" @close="closePopup" :isVisible="isPopupVisible" :card="selectedItemInfo" @delete_card="deleteCard" @changeDescription="changeDescription" @changeColor="changeColor"></zoomtask>
+  
+      <div>
+        <input type="text" v-model="searchUsername" placeholder="Entrez le nom d'utilisateur">
+        <button @click="searchUserByUsername">Rechercher</button>
+      </div>
+  
 
 
+<ul v-if="searchResults.value?.user.username === searchUsername.value">
+  
+  <li v-for="user in searchResults" :key="user.id" >
+    
+    {{ user.username }}
+    
+    <button @click="inviteUser(user.id)">Inviter</button>
+  </li>
+
+  
+</ul>
+<p v-else>Aucun utilisateur trouvé.</p>
+    </div>
+  </template>
+  
 <script setup>
 
+import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 const route = useRoute();
 const roomId = route.params.id;
 const rooms = ref([]);
+
+const searchUsername = ref('');
+const searchResults = ref([]);
 
 const { initAuth } = useAuth()
 
@@ -30,6 +56,38 @@ onBeforeMount(() => {
   }
 });
   
+async function searchUserByUsername() {
+  try {
+    const response = await $fetch('/api/rooms/searchByUsername', {
+      method: 'POST',
+      body: JSON.stringify({ username: searchUsername.value }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    searchResults.value = response;
+
+
+  } catch (error) {
+    console.error('Error searching user by username:', error);
+  }
+}
+
+async function inviteUser(userId) {
+  try {
+    const response = await $fetch('/api/rooms/inviteUser', {
+      method: 'POST',
+      body: JSON.stringify({ userId, roomId }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    console.log(response); 
+  } catch (error) {
+    console.error('Error inviting user:', error);
+   
+  }
+}
 
   
   async function getRoom(id) {
