@@ -25,7 +25,7 @@
           <div>
             <h2 class="text-lg font-semibold mt-8">Mes Salles</h2>
             <li v-for="room in rooms" :key="room.id" class="py-2">
-              <nuxt-link :to="`/room_adryan/${room.id}`">{{ room.name }}</nuxt-link>
+              <nuxt-link :to="`/room/${room.id}`">{{ room.name }}</nuxt-link>
             </li>
           </div>
         </div>
