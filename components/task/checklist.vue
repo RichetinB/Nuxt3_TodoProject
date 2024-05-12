@@ -32,8 +32,8 @@ export default {
     },
     methods: {
         async ChangeCheckbox(Finished, id){
-            let index = null;
             this.list_tasks.forEach((obj) => {
+                let index = null;
                 if (obj.id == id){
                     index = this.list_tasks.indexOf(obj)
                     if (Finished === true) {
@@ -119,12 +119,6 @@ export default {
                         const debug = this.list_tasks.splice(index, 1)
                         console.log(this.list_tasks)
                     }})
-                    const checking = this.AllCheckboxIsChecked()
-                if (checking){
-                    this.checklistIsFinished = true
-                } else {
-                    this.checklistIsFinished = false
-                }
             try {
                 const deleteTask = await $fetch("/api/task/task", {
                     method: "DELETE",
