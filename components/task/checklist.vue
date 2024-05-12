@@ -2,11 +2,11 @@
     <div id="ch">
         <ul id="checklist" >
             <div id="header_checkbox">
-                <img  v-if="this.checklistIsFinished == true" id="correct" src="https://png.pngtree.com/png-vector/20221215/ourmid/pngtree-green-check-mark-png-image_6525691.png" alt="CheckBox" > <input id="title_checklist" type="text" v-model="this.checklist.title">
+                <img  v-if="this.checklistIsFinished == true" id="correct" src="https://png.pngtree.com/png-vector/20221215/ourmid/pngtree-green-check-mark-png-image_6525691.png" alt="CheckBox" > <input id="title_checklist" type="text" @blur="ChangeTitleChecklist(this.checklist.id, this.checklist.title)" v-model="this.checklist.title">
                 <button class="btn_checklist" @click="AddTask"> Add </button> <button class="btn_checklist" @click="DeleteChecklist(this.checklist.id)"> Delete </button>
             </div>
             <li v v-for="(task) in this.list_tasks" class="li_task">
-                <input v-model="task.isFinished" type="checkbox" @change="ChangeCheckbox(task.isFinished, task.id)"> <input type="text" v-model="task.title"> <button class="btn_checklist" @click="DeleteTask(task.id)"> Delete Task </button>
+                <input v-model="task.isFinished" type="checkbox" @change="ChangeCheckbox(task.isFinished, task.id)"> <input type="text" v-model="task.task"  @blur="ChangeTitleTask(task.id, task.task)"> <button class="btn_checklist" @click="DeleteTask(task.id)"> Delete Task </button>
             </li>
         </ul>
     </div>
@@ -32,8 +32,8 @@ export default {
     },
     methods: {
         async ChangeCheckbox(Finished, id){
+            let index = null;
             this.list_tasks.forEach((obj) => {
-                let index = null;
                 if (obj.id == id){
                     index = this.list_tasks.indexOf(obj)
                     if (Finished === true) {
@@ -72,6 +72,33 @@ export default {
                 }
             }
             return result;
+        },
+        async ChangeTitleTask(id, newTitle){
+            let index = null;
+            this.list_tasks.forEach((obj) => {
+                if (obj.id == id){
+                    index = this.list_tasks.indexOf(obj)
+                    this.list_tasks[index].task = newTitle
+                }})
+            try {
+                const data = await $fetch("/api/task/task", {
+                method: "PUT",
+                body: {
+                    id: id,
+                    task: newTitle
+                }
+            })
+        }catch (error) {
+            console.log(error)
+        }
+        console.log(this.list_tasks)
+        },
+        ChangeTitleChecklist(id, newTitle) {
+            const data = {
+                id: id,
+                title: newTitle
+            }
+            this.$emit('ChangeTitleChecklist', data)
         },
         async DeleteChecklist(id) {
             this.$emit('DeleteChecklist', id)

@@ -5,8 +5,7 @@
     @mouseup="onMouseUp"
     @dblclick.native="EmitElement">
       <label for="task-title" @dblclick.stop></label>
-      <input @mousedown.stop @dblclick.stop type="text" id="task-title" v-model="this.todo_card.title" placeholder="Entrez le titre" @focus="FocusTitle()" @blur="BlurTitle()" :style="{ backgroundColor: this.card.color
-       }">
+      <input @mousedown.stop @dblclick.stop type="text" id="task-title" v-model="this.todo_card.title" placeholder="Entrez le titre" @focus="FocusTitle()" @blur="BlurTitle()" :style="{ backgroundColor: this.card.color }">
     </div>
   </template>
   <script>
@@ -20,7 +19,6 @@ export default {
         roomId: this.$route.params.id,
         colorActive: false,
         dragging: false,
-        textAreaColor: this.card.color
       };
     },
     methods: {
@@ -40,24 +38,18 @@ export default {
       await this.updatePos()
     },
     FocusTitle() {
-      this.card.color = "white"
+      this.textAreaColor = "white"
     },
     async BlurTitle() {
-      this.card.color = this.todo_card.color
+      this.textAreaColor = this.card.color
       await this.updateTitle()
     },
     async updateTitle(){
-      try {
-        const card_upd = await $fetch("/api/card/card", {
-          method: "PUT",
-          body: {
-            id: this.todo_card.id,
-            title: this.todo_card.title,
-          }
-        })
-      } catch (error){
-        console.log("Erreur lors des changement de la carte :" + error)
+      const data = {
+        id: this.todo_card.id,
+        title: this.todo_card.title
       }
+      this.$emit('ChangeTitle', data)
     },
     async updatePos(){
       try {

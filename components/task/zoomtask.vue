@@ -38,7 +38,7 @@
           </div>
           <div id="checkbox">
             <button @click="AddChecklist"> Add Checklist </button>
-            <checklist class="list-checkbox" v-for="(check) in this.list_checklist" :checklist="check" @DeleteChecklist="DeleteChecklist"></checklist>
+            <checklist class="list-checkbox" v-for="(check) in this.list_checklist" :checklist="check" @ChangeTitleChecklist="ChangeTitleChecklist" @DeleteChecklist="DeleteChecklist"></checklist>
           </div>
       </div>
       </div>
@@ -75,7 +75,6 @@ export default {
   methods: {
     updateFirst(event) {
       var container = document.getElementById('container')
-      console.log("sa marche vite fais")
 
       if (container) {
         container.style.backgroundColor = event.target.value;
@@ -205,6 +204,25 @@ export default {
         console.log("Erreur lors des changement de la carte :" + error)
       }
     },
+    async ChangeTitleChecklist(data){
+      this.list_checklist.forEach((obj) => {
+        if (obj.id == data.id){
+            const index = this.list_checklist.indexOf(obj)
+            this.list_checklist[index].title = data.title
+          }
+      })
+      try {
+            const ChangeTitleChecklist = await $fetch("/api/checklist/checklist", {
+            method: "PUT",
+            body: {
+                id: data.id,
+                title: data.title
+            }
+        })
+        }catch (error) {
+            console.log(error)
+        }
+    }
   },
   components: {
       checklist
