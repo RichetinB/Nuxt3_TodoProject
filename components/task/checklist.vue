@@ -31,9 +31,9 @@ export default {
         }
     },
     methods: {
-        ChangeCheckbox(Finished, id){
+        async ChangeCheckbox(Finished, id){
+            let index = null;
             this.list_tasks.forEach((obj) => {
-                let index = null;
                 if (obj.id == id){
                     index = this.list_tasks.indexOf(obj)
                     if (Finished === true) {
@@ -42,15 +42,26 @@ export default {
                         this.list_tasks[index].isFinished =  false
                     }
                 }})
-            console.log(this.list_tasks)
             const checking = this.AllCheckboxIsChecked()
-            console.log(checking)
                 if (checking){
                     this.checklistIsFinished = true
                 } else {
                     this.checklistIsFinished = false
                 }
-            console.log(this.checklistIsFinished)
+                await this.ChangeCheckboxAPI(id, this.list_tasks[index].isFinished)
+        },
+        async ChangeCheckboxAPI(taskid, bool) {
+            try {
+                const card_upd = await $fetch("/api/task/task", {
+                method: "PUT",
+                body: {
+                    id: taskid,
+                    isFinished: bool
+                }
+                })
+            } catch (error){
+                console.log(error)
+            }
         },
         AllCheckboxIsChecked(){
             var result = true
@@ -108,6 +119,12 @@ export default {
                         const debug = this.list_tasks.splice(index, 1)
                         console.log(this.list_tasks)
                     }})
+                    const checking = this.AllCheckboxIsChecked()
+                if (checking){
+                    this.checklistIsFinished = true
+                } else {
+                    this.checklistIsFinished = false
+                }
             try {
                 const deleteTask = await $fetch("/api/task/task", {
                     method: "DELETE",
