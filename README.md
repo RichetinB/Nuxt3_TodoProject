@@ -62,4 +62,4 @@ Il est également possible d'accédé à notre db via la commande ```prisma stud
 
 ## Auteur
 
-Ce projet a été vévelopper par Baptiste RICHETIN, Mathéo BAYLE, Adryan COURTIAL
+Ce projet a été développer par Baptiste RICHETIN, Mathéo BAYLE, Adryan COURTIAL
